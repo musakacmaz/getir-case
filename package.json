@@ -1,0 +1,36 @@
+{
+  "name": "getir-case",
+  "version": "1.0.0",
+  "description": "RESTful API with a single endpoint that fetches the data in the provided MongoDB collection and return the results in the requested format.",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/musakacmaz/getir-case.git"
+  },
+  "keywords": [
+    "getir",
+    "case",
+    "rest",
+    "api",
+    "node"
+  ],
+  "author": "musa kaçmaz",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/musakacmaz/getir-case/issues"
+  },
+  "homepage": "https://github.com/musakacmaz/getir-case#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.6.10",
+    "validator": "^11.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^6.2.2",
+    "eslint-config-google": "^0.13.0"
+  }
+}
