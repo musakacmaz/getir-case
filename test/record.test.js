@@ -42,11 +42,11 @@ describe('controller tests', () => {
             .send({
                 'startDate': '01-01-2020',
                 'endDate': '01-01-2015',
-                'minCount': '1000',
-                'maxCount': '-500'
+                'minCount': '0',
+                'maxCount': '500'
             });
-        expect(record.body.code).toEqual(2);
-        expect(record.body.msg).toBe('bad request');
+        expect(record.body.code).toEqual(4);
+        expect(record.body.msg).toBe('invalid start date');
         expect(record.statusCode).toBe(400);
     });
 });

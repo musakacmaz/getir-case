@@ -11,7 +11,7 @@ exports.search = function (req, res) {
     var request = req.body;
     try {
         // validating request payload params
-        if (validateRequest(request)) {
+        if (validateRequest(request).code == 3) {
             // get desired data whether if request params are valid
             getRecords(request).then(records => {
                 if (records) {
@@ -26,7 +26,7 @@ exports.search = function (req, res) {
                 } else {
                     res.status(204).send(
                         {
-                            code: 1,
+                            code: 2,
                             msg: 'no records found',
                             records: []
                         }
@@ -35,8 +35,8 @@ exports.search = function (req, res) {
             });
         } else {
             res.status(400).send({
-                code: 2,
-                msg: 'bad request',
+                code: validateRequest(request).code,
+                msg: validateRequest(request).msg,
                 records: []
             })
         }
@@ -44,7 +44,7 @@ exports.search = function (req, res) {
     } catch (err) {
         res.status(500).send(
             {
-                code: 3,
+                code: 1,
                 msg: err,
                 records: []
             }
@@ -56,10 +56,34 @@ exports.search = function (req, res) {
 function validateRequest(requestPayload) {
     var { startDate, endDate, minCount, maxCount } = requestPayload;
     var today = new Date().toISOString().slice(0, 10);
-    if (isValidDate(startDate) && isValidDate(endDate) && validator.isBefore(startDate, today) && (validator.isBefore(endDate, today) || validator.equals(endDate, today)) && validator.isAfter(endDate, startDate) && validator.isInt(minCount) && validator.isInt(maxCount) && +minCount < +maxCount && 0 <= +minCount && 0 < +maxCount) {
-        return true;
+
+    if (!isValidDate(startDate)) {
+        return { code: 4, msg: 'invalid start date' };
+    } else if (!isValidDate(endDate)) {
+        return { code: 5, msg: 'invalid end date' };
+    }
+    else if (!validator.isBefore(startDate, today)) {
+        return { code: 6, msg: 'start date must be before today' };
+    }
+    else if (!(validator.isBefore(endDate, today) || validator.equals(endDate, today))) {
+        return { code: 7, msg: 'end date must be today or before' };
+    }
+    else if (!validator.isAfter(endDate, startDate)) {
+        return { code: 8, msg: 'end date must be after start date' };
+    }
+    else if (!validator.isInt(minCount)) {
+        return { code: 9, msg: 'min count must be integer' };
+    }
+    else if (!validator.isInt(maxCount)) {
+        return { code: 10, msg: 'max count must be integer' };
+    }
+    else if (!(+minCount < +maxCount)) {
+        return { code: 11, msg: 'max count must be bigger that min count' };
+    }
+    else if (!(0 <= +minCount && 0 < +maxCount)) {
+        return { code: 12, msg: 'min or max count cannot be smaller than zero' };
     } else {
-        return false;
+        return { code: 3, msg: 'valid request' };
     }
 };
 
