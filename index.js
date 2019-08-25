@@ -49,6 +49,10 @@ app.all('*', function(req, res, next) {
 app.use('/api', router);
 
 // launch app to listen to specified port
-app.listen(port, function() {
+var server = app.listen(port, function() {
   console.log('running getir-case on port ' + port);
 });
+
+module.exports = server;
+
+
