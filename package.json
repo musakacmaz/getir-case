@@ -4,6 +4,7 @@
   "description": "RESTful API with a single endpoint that fetches the data in the provided MongoDB collection and return the results in the requested format.",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "test"
   },
   "repository": {
